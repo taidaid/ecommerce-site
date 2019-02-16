@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 
 // product name, the product description, the price and a link to a picture
 
 export default () => {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
+
   const handleSubmit = () => {};
+
+  const handleChangeName = e => {
+    setName(e.target.value);
+  };
+
+  const handleChangePrice = e => {
+    setPrice(e.target.value);
+  };
+  const handleChangeDescription = e => {
+    setDescription(e.target.value);
+  };
+  const handleChangeImage = e => {
+    setImage(e.target.value);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
