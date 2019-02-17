@@ -23,7 +23,7 @@ div {
   width: 50%;
 }
 
-#app {
+.App {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,4 +42,30 @@ aside a {
 
 aside a.router-link-exact-active {
   color: #42b983;
+}
+
+.products-list {
+  display: flex;
+  padding-top: 30px;
+}
+.products-list div {
+  width: 33%;
+
+  box-sizing: border-box;
+  padding: 30px;
+  background-color: lightsalmon;
+}
+
+button {
+  padding: 30px;
+  font-size: 2rem;
+}
+
+.description,
+.price {
+  padding-top: 20px;
+}
+
+img {
+  max-width: 200px;
 }
