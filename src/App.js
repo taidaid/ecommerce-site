@@ -10,7 +10,8 @@ const App = () => {
   const [products, setProducts] = useState([]);
 
   const addProduct = product => {
-    setProducts([...(products || [])], product);
+    const updatedProducts = [...(products || []), product];
+    setProducts(updatedProducts);
   };
 
   const deleteProduct = key => {
