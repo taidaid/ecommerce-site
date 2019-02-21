@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import AddProduct from "./components/AddProduct.js";
@@ -9,9 +9,14 @@ import "./App.css";
 const App = () => {
   const [products, setProducts] = useState([]);
 
+  useEffect(() => {
+    setProducts(JSON.parse(localStorage.getItem("products")) || []);
+  }, []);
+
   const addProduct = product => {
-    const updatedProducts = [...(products || []), product];
+    const updatedProducts = [...products, product];
     setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const deleteProduct = key => {
@@ -20,37 +25,46 @@ const App = () => {
       .slice(0, key)
       .concat(updatedProducts.slice(key + 1, updatedProducts.length));
     setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   return (
     <Router>
-      <div className="App">
+      <div id="App">
         <aside>
-          <Link to="/add-product">Add Product</Link>
-          <Link to="/">Products List</Link>
+          <Link to={`/`}>Products</Link>
+          <Link to={`/add-product`}>Add product</Link>
         </aside>
         <main>
           <Route
             exact
-            path="/"
-            render={props => {
+            path={`/`}
+            render={({ history }) => (
+              <ProductsList
+                products={products}
+                deleteProduct={deleteProduct}
+                history={history}
+              />
+            )}
+          />
+          <Route
+            path="/add-product"
+            render={({ history }) => (
+              <AddProduct addProduct={addProduct} history={history} />
+            )}
+          />
+          <Route
+            path="/product/:slug"
+            render={({ match }) => {
+              console.log(match.params.slug);
+              console.log(products.map(product => product));
               return (
-                <ProductsList
-                  products={products}
-                  deleteProduct={deleteProduct}
+                <SingleProduct
+                  product={products.find(p => p.slug === match.params.slug)}
                 />
               );
             }}
           />
-          <Route
-            path="/add-product"
-            render={props => {
-              return (
-                <AddProduct addProduct={addProduct} history={props.history} />
-              );
-            }}
-          />
-          <Route path="/product/:slug" component={SingleProduct} />
         </main>
       </div>
     </Router>
