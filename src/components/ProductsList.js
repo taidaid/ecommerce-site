@@ -12,7 +12,7 @@ export default props => {
           return (
             <div
               key={index}
-              onClick={props.history.push("/product/" + product.slug)}
+              onClick={() => props.history.push("/product/" + product.slug)}
             >
               <img src={product.image} alt={`${product.name}`} />
               <h2>{product.name}</h2>

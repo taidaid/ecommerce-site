@@ -8,6 +8,7 @@ import "./App.css";
 
 const App = () => {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     setProducts(JSON.parse(localStorage.getItem("products")) || []);
@@ -26,6 +27,11 @@ const App = () => {
       .concat(updatedProducts.slice(key + 1, updatedProducts.length));
     setProducts(updatedProducts);
     localStorage.setItem("products", JSON.stringify(updatedProducts));
+  };
+
+  const addToCart = ({ product, quantity }) => {
+    const updatedCard = [...(cart || []), { product, quantity }];
+    setCart(updatedCard);
   };
 
   return (
@@ -61,6 +67,7 @@ const App = () => {
               return (
                 <SingleProduct
                   product={products.find(p => p.slug === match.params.slug)}
+                  addToCart={addToCart}
                 />
               );
             }}
