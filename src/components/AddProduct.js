@@ -35,9 +35,21 @@ export default props => {
 
   const addProduct = e => {
     e.preventDefault();
-    // console.log(slugify(name));
-    props.addProduct({ name, price, description, image, slug: slugify(name) });
-    props.history.push("/");
+    if (!props.products.find(product => product.slug === slugify(name))) {
+      props.addProduct({
+        name,
+        price,
+        description,
+        image,
+        slug: slugify(name)
+      });
+      props.history.push("/");
+      props.showConfirmation();
+    } else {
+      alert(
+        "A product with this name already exists, please choose a different name"
+      );
+    }
   };
 
   const handleChangeName = e => {

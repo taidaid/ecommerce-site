@@ -11,6 +11,7 @@ export default props => {
         props.products.map((product, index) => {
           return (
             <div
+              className="product"
               key={index}
               onClick={() => props.history.push("/product/" + product.slug)}
             >
