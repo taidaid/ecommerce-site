@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Elements, StripeProvider } from "react-stripe-elements";
+import CheckoutForm from "./components/CheckoutForm";
 
 import AddProduct from "./components/AddProduct.js";
 import ProductsList from "./components/ProductsList.js";
@@ -40,6 +42,15 @@ const App = () => {
     localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
+  const deleteCartItem = key => {
+    let updatedCart = [...cart];
+    updatedCart = updatedCart
+      .slice(0, key)
+      .concat(updatedCart.slice(key + 1, updatedCart.length));
+    setCart(updatedCart);
+    localStorage.setItem("products", JSON.stringify(updatedCart));
+  };
+
   const addToCart = ({ product, quantity }) => {
     const index = cart.findIndex(item => {
       return item.product.slug === product.slug;
@@ -63,9 +74,10 @@ const App = () => {
         <aside>
           <Link to={`/`}>Products</Link>
           <Link to={`/add-product`}>Add product</Link>
+          <Link to={`/checkout`}>Checkout</Link>
         </aside>
         <main>
-          <Cart cart={cart} />
+          <Cart deleteCartItem={deleteCartItem} cart={cart} />
           <Confirmation confirmation={confirmation} />
           <Route
             exact
@@ -99,6 +111,20 @@ const App = () => {
                 />
               );
             }}
+          />
+          <Route
+            exact
+            path="/checkout"
+            render={() => (
+              <StripeProvider apiKey="pk_test_fUuLl3ihZQmM4yL40kxbqWUJ">
+                <div className="example">
+                  <h1>React Stripe Elements Example</h1>
+                  <Elements>
+                    <CheckoutForm />
+                  </Elements>
+                </div>
+              </StripeProvider>
+            )}
           />
         </main>
       </div>

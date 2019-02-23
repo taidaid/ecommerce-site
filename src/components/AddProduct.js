@@ -72,15 +72,15 @@ export default props => {
         <h1>Add Product</h1>
         <div>
           <label>Name:</label>
-          <input required autofocus="true" onChange={handleChangeName} />
+          <input required autoFocus="true" onChange={handleChangeName} />
         </div>
         <div>
           <label>Description:</label>
-          <textarea required onChange={handleChangePrice} />
+          <textarea required onChange={handleChangeDescription} />
         </div>
         <div>
           <label>Price in $:</label>
-          <input required onChange={handleChangeDescription} />
+          <input required onChange={handleChangePrice} />
         </div>
         <div>
           <label>Image URL</label>

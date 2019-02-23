@@ -1,4 +1,5 @@
 import React from "react";
+import Truncate from "react-truncate";
 
 export default props => {
   const deleteProduct = key => {
@@ -15,9 +16,16 @@ export default props => {
               key={index}
               onClick={() => props.history.push("/product/" + product.slug)}
             >
-              <img src={product.image} alt={`${product.name}`} />
+              <div className="productImage">
+                <img src={product.image} alt={`${product.name}`} />
+              </div>
+
               <h2>{product.name}</h2>
-              <p className="description">{product.decsription}</p>
+              <p className="description">
+                <Truncate lines={3} ellipsis={<span>...</span>}>
+                  {product.description}
+                </Truncate>
+              </p>
               <p className="price">${product.price}</p>
               <button
                 onClick={e => {
