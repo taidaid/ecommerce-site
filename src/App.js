@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import CheckoutForm from "./components/CheckoutForm";
 
@@ -34,21 +34,27 @@ const App = () => {
   };
 
   const deleteProduct = key => {
-    let updatedProducts = [...products];
-    updatedProducts = updatedProducts
+    let newProducts = [...products];
+    newProducts = newProducts
       .slice(0, key)
-      .concat(updatedProducts.slice(key + 1, updatedProducts.length));
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+      .concat(newProducts.slice(key + 1, newProducts.length));
+    setProducts(newProducts);
+    localStorage.setItem("products", JSON.stringify(newProducts));
   };
 
   const deleteCartItem = key => {
-    let updatedCart = [...cart];
-    updatedCart = updatedCart
+    let newCart = [...cart];
+    newCart = newCart
       .slice(0, key)
-      .concat(updatedCart.slice(key + 1, updatedCart.length));
-    setCart(updatedCart);
-    localStorage.setItem("products", JSON.stringify(updatedCart));
+      .concat(newCart.slice(key + 1, newCart.length));
+    setCart(newCart);
+    localStorage.setItem("products", JSON.stringify(newCart));
+  };
+
+  const clearCart = () => {
+    const newCart = [];
+    setCart(newCart);
+    localStorage.setItem("products", JSON.stringify(newCart));
   };
 
   const addToCart = ({ product, quantity }) => {
@@ -79,53 +85,56 @@ const App = () => {
         <main>
           <Cart deleteCartItem={deleteCartItem} cart={cart} />
           <Confirmation confirmation={confirmation} />
-          <Route
-            exact
-            path={`/`}
-            render={({ history }) => (
-              <ProductsList
-                products={products}
-                deleteProduct={deleteProduct}
-                history={history}
-              />
-            )}
-          />
-          <Route
-            path="/add-product"
-            render={({ history }) => (
-              <AddProduct
-                addProduct={addProduct}
-                products={products}
-                history={history}
-                showConfirmation={showConfirmation}
-              />
-            )}
-          />
-          <Route
-            path="/product/:slug"
-            render={({ match }) => {
-              return (
-                <SingleProduct
-                  product={products.find(p => p.slug === match.params.slug)}
-                  addToCart={addToCart}
+          <Switch>
+            <Route
+              path="/add-product"
+              render={({ history }) => (
+                <AddProduct
+                  addProduct={addProduct}
+                  products={products}
+                  history={history}
+                  showConfirmation={showConfirmation}
                 />
-              );
-            }}
-          />
-          <Route
-            exact
-            path="/checkout"
-            render={() => (
-              <StripeProvider apiKey="pk_test_fUuLl3ihZQmM4yL40kxbqWUJ">
-                <div className="example">
-                  <h1>React Stripe Elements Example</h1>
-                  <Elements>
-                    <CheckoutForm />
-                  </Elements>
-                </div>
-              </StripeProvider>
-            )}
-          />
+              )}
+            />
+            <Route
+              path="/product/:slug"
+              render={({ match }) => {
+                return (
+                  <SingleProduct
+                    product={products.find(p => p.slug === match.params.slug)}
+                    addToCart={addToCart}
+                  />
+                );
+              }}
+            />
+            <Route
+              exact
+              path="/checkout"
+              render={() => (
+                <StripeProvider apiKey="pk_test_fUuLl3ihZQmM4yL40kxbqWUJ">
+                  <div className="example">
+                    <h1>Checkout</h1>
+                    <Elements>
+                      <CheckoutForm
+                        showConfirmation={showConfirmation}
+                        clearCart={clearCart}
+                      />
+                    </Elements>
+                  </div>
+                </StripeProvider>
+              )}
+            />
+            <Route
+              render={({ history }) => (
+                <ProductsList
+                  products={products}
+                  deleteProduct={deleteProduct}
+                  history={history}
+                />
+              )}
+            />
+          </Switch>
         </main>
       </div>
     </Router>
