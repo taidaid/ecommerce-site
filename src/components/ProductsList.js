@@ -7,7 +7,6 @@ export default props => {
   };
   return (
     <div className="products-list">
-      {/* {console.log(props.products)} */}
       {props.products.length > 0 ? (
         props.products.map((product, index) => {
           return (
