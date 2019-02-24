@@ -10,6 +10,10 @@ class CheckoutForm extends Component {
   }
 
   async submit(ev) {
+    if (!this.props.cart.length) {
+      alert("Add items to the cart to checkout");
+      return;
+    }
     let { token } = await this.props.stripe.createToken({ name: "Name" });
     let response = await fetch("http://localhost:9000/charge", {
       method: "POST",
@@ -20,12 +24,15 @@ class CheckoutForm extends Component {
     if (response.ok) {
       this.props.showConfirmation();
       this.setState({ complete: true });
-      this.clearCart();
+      this.props.clearCart();
     }
   }
 
-  clearCart = () => {
-    this.props.clearCart();
+  getTotal = () => {
+    const total = this.props.cart.reduce((acc, item) => {
+      return acc + item.quantity * item.product.price;
+    }, 0);
+    return total;
   };
 
   render() {
@@ -34,9 +41,12 @@ class CheckoutForm extends Component {
     }
     return (
       <div className="checkout">
-        <p>Would you like to complete the purchase?</p>
+        <h4>Would you like to complete the purchase?</h4>
+
         <CardElement />
-        <button onClick={this.submit}>Send</button>
+        <button onClick={this.submit}>
+          {!this.props.cart.length ? "Empty Cart" : `Pay $${this.getTotal()}`}
+        </button>
       </div>
     );
   }

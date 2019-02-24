@@ -12,6 +12,7 @@ export default props => {
       alert("Quantity must be more than 0");
     } else {
       props.addToCart({ product: props.product, quantity: quantity });
+      props.history.push("/");
     }
   };
 

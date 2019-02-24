@@ -48,13 +48,13 @@ const App = () => {
       .slice(0, key)
       .concat(newCart.slice(key + 1, newCart.length));
     setCart(newCart);
-    localStorage.setItem("products", JSON.stringify(newCart));
+    localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   const clearCart = () => {
     const newCart = [];
     setCart(newCart);
-    localStorage.setItem("products", JSON.stringify(newCart));
+    localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   const addToCart = ({ product, quantity }) => {
@@ -99,11 +99,12 @@ const App = () => {
             />
             <Route
               path="/product/:slug"
-              render={({ match }) => {
+              render={({ match, history }) => {
                 return (
                   <SingleProduct
                     product={products.find(p => p.slug === match.params.slug)}
                     addToCart={addToCart}
+                    history={history}
                   />
                 );
               }}
@@ -119,6 +120,7 @@ const App = () => {
                       <CheckoutForm
                         showConfirmation={showConfirmation}
                         clearCart={clearCart}
+                        cart={cart}
                       />
                     </Elements>
                   </div>
