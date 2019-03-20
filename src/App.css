@@ -5,6 +5,13 @@ textarea {
   vertical-align: middle;
 }
 
+html,
+body,
+#root > div {
+  width: 100%;
+  background-color: rgb(240, 240, 240);
+}
+
 label {
   vertical-align: middle;
   padding-right: 10px;
@@ -139,4 +146,21 @@ table.cart button {
 
 .cart-button {
   border: 0 none !important;
+}
+
+.checkout {
+  width: 33%;
+  margin: auto;
+  border: 1px solid lightgray;
+  box-shadow: 1px 1px lightgray;
+  border-bottom: none;
+}
+
+.add-product {
+  width: 33%;
+  padding: 2vh;
+  margin: auto;
+  border: 1px solid lightgray;
+  box-shadow: 1px 1px lightgray;
+  border-bottom: none;
 }

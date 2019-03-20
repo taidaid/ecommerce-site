@@ -67,7 +67,7 @@ export default props => {
   };
 
   return (
-    <div>
+    <div className="add-product">
       <form onSubmit={addProduct}>
         <h1>Add Product</h1>
         <div>
